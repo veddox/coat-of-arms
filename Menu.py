@@ -6,6 +6,8 @@
 # Licensed under the terms of the MIT license.
 #
 
+from types import FunctionType
+
 class Menu:
     def __init__(self, start_entries=[], intro="Please choose an option:", back_entry=[True, "startm"]):
         '''
@@ -61,12 +63,12 @@ class Menu:
         while not valid_input(choice, range(len(self.entries))):
             print("Invalid input! Please choose again:")
             choice = input(">>> ")
-        try:
-            self.entries[int(choice)-1][1]()
-        except Exception as e:
-            print("Sorry. An error occured. Please try again.")
-            print(e)
-            self.execute()
+      #  try:
+        self.entries[int(choice)-1][1]()
+      #  except Exception as e:
+            #print("Sorry. An error occured. Please try again.")
+            #print(e)
+            #self.execute()
 
 
 
@@ -79,7 +81,7 @@ class GuidedMenu:
 
     #adds a new entry and maybe the related data, too
     def add_entry(self, entry, data=None):
-        self.entries.append([str(entry), data])
+        self.entries.append([entry, data])
 
     #adds a bunch of entries by calling add_entry for every parsed list element
     def add_entries(self, entries=[]):
@@ -89,10 +91,9 @@ class GuidedMenu:
     #processes the menu: gives questions and takes the answers
     def execute(self):
         print(self.intro_text)
-        print(self.entries)
         for i in range(len(self.entries)):
-            if isinstance(self.entries[i], str):
+            if isinstance(self.entries[i][0], str):
                 print(str(i+1)+".: "+self.entries[i][0])
                 self.entries[i][1] = input(">>> ")
-            elif isinstance(self.entries[i], function):
-                self.entries[i]()
+            else:
+                self.entries[i][0]()

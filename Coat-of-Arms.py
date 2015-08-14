@@ -51,7 +51,7 @@ def create_menus():
     startgamegm = GuidedMenu([], "\nPlease give the following data to start a new game:")
     joingamegm = GuidedMenu([], "\nPlease follow the instructions to join an existing game:")
     loadgamegm = GuidedMenu([], "\nPlease help me to load the game:")
-    createplayergm = GuidedMenu([], "\nPlease choose your player's attributes:'")
+    createplayergm = GuidedMenu([], "\nPlease choose your player's attributes:")
     createworldgm = GuidedMenu([], "\nPlease choose these parameters to create a new world:")
 
     #Adding entries just now, to avoid circular references
@@ -59,7 +59,11 @@ def create_menus():
     newgamem.entries = [("Start game", startgamegm.execute),("Join game", joingamegm.execute),("Return to start menu", startm.execute)]
     quitm.entries = [("Yes", exit),("No", startm.execute),("Return to start menu", startm.execute)]
 
-    startgamegm.add_entries(["Game name:", "Communication e-mail server:", createworldgm.execute, createplayergm.execute])
+    startgamegm.add_entries(["Game name:", "Communication e-mail server:", "E-mail account password:", createworldgm.execute, createplayergm.execute])
+    joingamegm.add_entries(["Game name:", "Communication e-mail server:", "E-mail account password:", createplayergm.execute])
+    loadgamegm.add_entries(["Absolute file path to the save file:"])
+    createplayergm.add_entries(["Name:", "Nation:", "Age (Be careful!):"])#, (sexm = Menu([("Female", return "Female"), ("Male", return "Male")])).execute])
+    createworldgm.add_entries(["Name:", "Height:", "Width:"])
 
 if __name__ == '__main__':
     main()
