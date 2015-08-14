@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- This is an example of what a world file should look like. -->
+<world>
+  <seed>4</seed> <!-- Guaranteed to be random by xkcd :D -->
+  <territory name="Lapo">
+	<tax>1000</tax>
+	<neighbour name="Ivun"/>
+	<neighbour name="Afawon"/>
+	<neighbour name="Weyne"/>
+  </territory>
+  <territory name="Ivun">
+	<tax>1000</tax>
+	<neighbour name="Lapo"/>
+	<neighbour name="Afawon"/>
+	<neighbour name="Weyne"/>
+  </territory>
+  <territory name="Afawon">
+	<tax>1000</tax>
+	<neighbour name="Ivun"/>
+	<neighbour name="Lapo"/>
+	<neighbour name="Weyne"/>
+  </territory>
+  <territory name="Weyne">
+	<tax>3000</tax>
+	<neighbour name="Ivun"/>
+	<neighbour name="Afawon"/>
+	<neighbour name="Lapo"/>
+  </territory>
+</world>
