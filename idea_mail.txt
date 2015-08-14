@@ -1,0 +1,51 @@
+Hi Chris,
+
+[...]
+
+Ich hab in den letzten paar Tagen auch an einer Idee überlegt, da
+erzähle ich dir einfach mal, was ich bis jetzt habe. Im Grunde genommen
+ist es ein Eroberungsspiel, dass sich über mehrere Tage/Wochen/Monate...
+hinweg zieht. Jeder von uns fängt mit einer kleinen Armee und einem
+Territorium an, und im Laufe der Zeit müssen wir uns immer neue
+Territorien dazu erobern. Jedes beherrschte Territorium generiert Geld,
+dass man braucht, um Armeeeinheiten zu rekrutieren und zu unterhalten.
+Jede Einheit hat zwei wichtige Eigenschaften: Kampfkraft und Stärke. Die
+Kampfkraft bestimmt, wie effektiv sie im Kampf ist; die Stärke misst die
+Zahl der einsatzfähigen Soldaten (wenn Stärke <= 0 ist die Einheit tot).
+
+Pro Spielrunde kann man jeder Einheit Befehle geben: entweder sie
+marschieren in ein neues Territorium, kämpfen mit gegnerischen
+Einheiten, ruhen sich aus (erhöht die Stärke) oder trainieren (erhöht
+die Kampfkraft). Wenn alle Befehle gegeben wurden, schickt das Programm
+auf dem eigenen Computer eine Email mit den Befehlen an alle
+Spielteilnehmer. Wenn alle Spielteilnehmer ihre Befehle gegeben haben
+und die Befehle von allen anderen empfangen haben, geht es mit der
+nächsten Runde weiter.
+
+Technisch gesehen ist das besondere an diesem Spiel, dass es rein
+peer-to-peer ist, es gibt keinen Server. Das bringt allerdings auch ein
+paar kleine Komplikationen, v.a. das Kampfsystem muss noch ausgeklügelt
+werden. Sollte aber machbar sein. Dadurch, dass es rundenbasiert ist
+kann die Spielgeschwindigkeiten um mehrere Größenordnungen variieren.
+(Ich träume z.B. davon, dass wir ständig so ein Spiel am Laufen halten,
+wo halt jeder einmal am Tag einen Zug macht oder so.) Theoretisch sollte
+es auch möglich sein, dass Leute später zu einem Spiel mit einsteigen.
+Was ich auf jeden Fall mit hineinbringen will, ist dass sich die
+Spielwelt dynamisch anpassen lässt - sprich dass man nach Spielbeginn
+noch Territorien hinzufügen kann.
+
+Für das UI habe ich mir gedacht, wir könnten mit Zahlenmenüs arbeiten.
+Dabei muss der Spieler keine Befehle auswendig lernen, sondern wird
+durch eine Reihe von Menüs geführt, wo er einfach die Zahl des
+gewünschten Eintrags eingeben muss. Denkbar einfach und idiotensicher.
+Wie das aussehen kann, siehst du im Anhang. Ich stelle es mir so vor,
+dass (fast) unser gesamtes UI einfach nur aus einer Liste von
+"Menu"-Instanzen besteht, die auf einander zeigen. Das Ganze zu
+schreiben sollte nicht mehr als eine Stunde brauchen, dann können wir
+uns auf die Logik und den Emailverkehr konzentrieren. Und hoffentlich
+schon mal ein wenig spielen :D
+
+Was denkst du dazu?
+
+Liebe Grüße,
+Daniel
