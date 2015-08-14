@@ -29,7 +29,7 @@ class Territory:
             self.units.append(unit)
 
 class Unit:
-    def __init__(self, uid, max_health, strength, name=""):
+    def __init__(self, uid, max_health, strength, location, name=""):
         self.uid = uid #A unique id consisting of player name + id number
         self.max_health = self.health = max_health
         self.strength = strength
@@ -47,7 +47,7 @@ class Unit:
         else: return 0
 
 class Player:
-    def __init__(self, name, gold= 0, units=[], territories=[]):
+    def __init__(self, name, gold=0, territories=[], units={}):
         #TODO replace args with kwargs
         self.name = name
         self.units = units
@@ -57,7 +57,7 @@ class Player:
 
 class World:
     def __init__(self, world_file=None):
-        self.players = []
+        self.players = {}
         self.territories = {}
         self.random_seed = None
         if world_file:
@@ -68,22 +68,58 @@ class World:
         world_tree = xmlET.parse(file_name)
         tree_root = world_tree.getroot()
         self.random_seed = int(tree_root.find('seed').text)
+        # Load all territories
         for t in tree_root.findall('territory'):
             name = t.attrib.get('name')
-            tax = t.find('tax')
+            tax = int(t.find('tax').text)
+            owner = t.find('owner').text
             neighbours = []
             for n in t.findall('neighbour'): neighbours.append(n.text)
-            self.territories[name] = Territory(name, tax, neighbours)
+            units = []
+            for u in t.findall('unit'): units.append(u.text)
+            self.territories[name] = Territory(name, tax, neighbours,
+                                               owner, units)
+        # Load the players
+        for p in tree_root.findall('player'):
+            name = p.attrib.get('name')
+            gold = int(p.find('gold').text)
+            territories = []
+            for t in p.findall('territory'): territories.append(t.text)
+            units = {}
+            for u in p.findall('unit'):
+                uid = u.attrib.get('uid')
+                u_name = u.attrib.get('name', "")
+                max_health = u.attrib.get('max_health')
+                health = u.attrib.get('health')
+                strength = u.attrib.get('strength')
+                location = u.attrib.get('location')
+                units[uid] = Unit(uid, max_health, strength, location, u_name)
+            self.players[name] = Player(name, gold, territories, units)
+            
 
     def pretty_print(self):
+        "This is primarily a debugging function"
         print("World:\n======")
         print("Random seed: "+str(self.random_seed)+"\n")
         for t in self.territories.items():
             print("Territory "+t[0]+":")
-            print("> "+str(t[1].tax.text)+" gold taxes")
+            print("> Owner is "+str(t[1].owner))
+            print("> "+str(t[1].tax)+" gold taxes")
             neighbours = ""
             for n in t[1].neighbours: neighbours = n+" "+neighbours
             print("> Neighbours: "+neighbours)
+            t_units = ""
+            for tu in t[1].units: t_units = tu+" "+t_units
+            print("> Units: "+t_units)
+        for p in self.players.items():
+            print("Player "+p[0]+":")
+            print("> "+str(p[1].gold)+" gold")
+            territories = ""
+            for t in p[1].territories: territories = t+" "+territories
+            print("> Territories: "+territories)
+            p_units = ""
+            for pu in p[1].units.items(): p_units = pu[1].uid+" "+p_units
+            print("> Units: "+p_units)
 
 
 if __name__ == '__main__': #debugging
