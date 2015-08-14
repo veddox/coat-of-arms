@@ -9,6 +9,8 @@
 
 import xml.etree.ElementTree as xmlET
 
+global unit_cost = 2000
+
 class Territory:
     def __init__(self, name, tax, neighbours=[], owner="", units=[]):
         self.name = name
@@ -28,12 +30,25 @@ class Territory:
         if unit not in self.units:
             self.units.append(unit)
 
+
+
+class Occupations:
+    "A list of possible activities for army units"
+    # Better done with enums, but they aren't introduced until Python 3.4
+    RESTING = 0
+    MARCHING = 1
+    TRAINING = 2
+    FIGHTING = 3
+
 class Unit:
-    def __init__(self, uid, max_health, strength, location, name=""):
+    def __init__(self, uid, location, max_health=100, strength=5, name=""):
         self.uid = uid #A unique id consisting of player name + id number
         self.max_health = self.health = max_health
         self.strength = strength
         self.name = name
+        self.location = location
+        self.current_occupation = Occupations.RESTING
+        self.training_units = 0
 
     def change_health(self, amount):
         ''' Change the health of this unit by amount. Method returns -1 if the
@@ -46,6 +61,15 @@ class Unit:
             return -1 #replace this with a custom error?
         else: return 0
 
+    def train(self):
+        ''' Tell a unit to train. For every three turns spent training, the unit
+        gains one strength point.
+        '''
+        self.current_occupation = Occupation.TRAINING
+        self.training_units = self.training_units + 1
+        if self.training_units % 3 == 0:
+            self.strength = self.strength + 1
+
 class Player:
     def __init__(self, name, gold=0, territories=[], units={}):
         #TODO replace args with kwargs
@@ -53,7 +77,21 @@ class Player:
         self.units = units
         self.territories = territories
         self.gold = gold
+        self.uid_counter = 1
 
+    def new_unit(self, location):
+        ''' The player buys a new unit that is set down at the specified
+        location. If the player has insufficient funds, nothing happens and
+        the method returns -1.
+        '''
+        global unit_cost
+        if self.gold >= unit_cost:
+            self.gold = self.gold - unit_cost
+            uid = self.name+str(self.uid_counter)
+            self.uid_counter = self.uid_counter + 1
+            self.units[uid] = Unit(uid, location)
+            return 0
+        else: return -1
 
 class World:
     def __init__(self, world_file=None):
