@@ -7,9 +7,7 @@
 # Licensed under the terms of the MIT license.
 #
 
-import xml.etree.ElementTree as xml
-
-global world
+import xml.etree.ElementTree as xmlET
 
 class Territory:
     def __init__(self, name, tax, neighbours=[], owner="", units=[]):
@@ -23,6 +21,7 @@ class Territory:
         "Add a neighbour to this territory (by name)"
         if neighbour not in self.neighbours:
             self.neighbours.append(neighbour)
+            print(self.name+" now has the neighbours "+str(self.neighbours))
 
     def add_unit(self, unit):
         "Add a unit to this territory (by UID)"
@@ -58,12 +57,36 @@ class Player:
 
 class World:
     def __init__(self, world_file=None):
-        if world_file: parse_world_file(world_file)
-        else:
-            self.players = self.territories = []
+        self.players = []
+        self.territories = {}
+        self.random_seed = None
+        if world_file:
+            self.load_world(world_file)
 
-    def parse_world_file(self, file_name):
+    def load_world(self, file_name):
         "Parse the given world file"
-        pass
-            
+        world_tree = xmlET.parse(file_name)
+        tree_root = world_tree.getroot()
+        self.random_seed = int(tree_root.find('seed').text)
+        for t in tree_root.findall('territory'):
+            name = t.attrib.get('name')
+            tax = t.find('tax')
+            neighbours = []
+            for n in t.findall('neighbour'): neighbours.append(n.text)
+            self.territories[name] = Territory(name, tax, neighbours)
+
+    def pretty_print(self):
+        print("World:\n======")
+        print("Random seed: "+str(self.random_seed)+"\n")
+        for t in self.territories.items():
+            print("Territory "+t[0]+":")
+            print("> "+str(t[1].tax.text)+" gold taxes")
+            neighbours = ""
+            for n in t[1].neighbours: neighbours = n+" "+neighbours
+            print("> Neighbours: "+neighbours)
+
+
+if __name__ == '__main__': #debugging
+    w = World('example_world.xml')
+    w.pretty_print()            
     

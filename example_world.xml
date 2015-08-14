@@ -4,26 +4,26 @@
   <seed>4</seed> <!-- Guaranteed to be random by xkcd :D -->
   <territory name="Lapo">
 	<tax>1000</tax>
-	<neighbour name="Ivun"/>
-	<neighbour name="Afawon"/>
-	<neighbour name="Weyne"/>
+	<neighbour>Ivun</neighbour>
+	<neighbour>Afawon</neighbour>
+	<neighbour>Weyne</neighbour>
   </territory>
   <territory name="Ivun">
 	<tax>1000</tax>
-	<neighbour name="Lapo"/>
-	<neighbour name="Afawon"/>
-	<neighbour name="Weyne"/>
+	<neighbour>Lapo</neighbour>
+	<neighbour>Afawon</neighbour>
+	<neighbour>Weyne</neighbour>
   </territory>
   <territory name="Afawon">
 	<tax>1000</tax>
-	<neighbour name="Ivun"/>
-	<neighbour name="Lapo"/>
-	<neighbour name="Weyne"/>
+	<neighbour>Ivun</neighbour>
+	<neighbour>Lapo</neighbour>
+	<neighbour>Weyne</neighbour>
   </territory>
   <territory name="Weyne">
 	<tax>3000</tax>
-	<neighbour name="Ivun"/>
-	<neighbour name="Afawon"/>
-	<neighbour name="Lapo"/>
+	<neighbour>Ivun</neighbour>
+	<neighbour>Afawon</neighbour>
+	<neighbour>Lapo</neighbour>
   </territory>
 </world>
