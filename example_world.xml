@@ -37,9 +37,9 @@
 	<gold>1024</gold>
 	<territory>Afawon</territory>
 	<territory>Weyne</territory>
-	<unit uid="Daniel1" name="King's Guard" strength="10" health="100" max_health="100" location="Afawon"/>
-	<unit uid="Daniel2" name="King's Rangers" strength="8" health="150" max_health="200" location="Weyne"/>
-	<unit uid="Daniel3" name="First Militia" strength="4" health="70" max_health="80" location="Weyne"/>
+	<unit uid="Daniel1" name="King's Guard" strength="10" size="100" max_size="100" location="Afawon"/>
+	<unit uid="Daniel2" name="King's Rangers" strength="8" size="150" max_size="200" location="Weyne"/>
+	<unit uid="Daniel3" name="First Militia" strength="4" size="70" max_size="80" location="Weyne"/>
   </player>
   <player name="Chris">
 	<gold>2048</gold>

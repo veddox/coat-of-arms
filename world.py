@@ -9,7 +9,8 @@
 
 import xml.etree.ElementTree as xmlET
 
-global unit_cost = 2000
+global unit_cost
+unit_cost = 2000
 
 class Territory:
     def __init__(self, name, tax, neighbours=[], owner="", units=[]):
@@ -30,8 +31,6 @@ class Territory:
         if unit not in self.units:
             self.units.append(unit)
 
-
-
 class Occupations:
     "A list of possible activities for army units"
     # Better done with enums, but they aren't introduced until Python 3.4
@@ -41,23 +40,23 @@ class Occupations:
     FIGHTING = 3
 
 class Unit:
-    def __init__(self, uid, location, max_health=100, strength=5, name=""):
+    def __init__(self, uid, location, max_size=100, strength=5, name=""):
         self.uid = uid #A unique id consisting of player name + id number
-        self.max_health = self.health = max_health
+        self.max_size = self.size = max_size
         self.strength = strength
         self.name = name
         self.location = location
         self.current_occupation = Occupations.RESTING
         self.training_units = 0
 
-    def change_health(self, amount):
-        ''' Change the health of this unit by amount. Method returns -1 if the
+    def change_size(self, amount):
+        ''' Change the size of this unit by amount. Method returns -1 if the
         unit dies, otherwise returns 0.
         '''
-        self.health = self.health + amount
-        if self.health > self.max_health:
-            self.health = self.max_health
-        elif self.health <= 0:
+        self.size = self.size + amount
+        if self.size > self.max_size:
+            self.size = self.max_size
+        elif self.size <= 0:
             return -1 #replace this with a custom error?
         else: return 0
 
@@ -90,6 +89,18 @@ class Player:
             uid = self.name+str(self.uid_counter)
             self.uid_counter = self.uid_counter + 1
             self.units[uid] = Unit(uid, location)
+            return 0
+        else: return -1
+
+    def upgrade_unit(self, uid):
+        ''' The player upgrades a unit (i.e. increases it's max size by one).
+        Requires unit_cost / 50 gold. If the player has insufficient funds, the
+        method does nothing and returns -1, otherwise it returns 0.
+        '''
+        global unit_cost
+        if self.gold >= unit_cost / 50:
+            self.gold = self.gold - unit_cost / 50
+            self.units[uid].max_size = self.units[uid].max_size + 1
             return 0
         else: return -1
 
@@ -127,11 +138,11 @@ class World:
             for u in p.findall('unit'):
                 uid = u.attrib.get('uid')
                 u_name = u.attrib.get('name', "")
-                max_health = u.attrib.get('max_health')
-                health = u.attrib.get('health')
+                max_size = u.attrib.get('max_size')
+                size = u.attrib.get('size')
                 strength = u.attrib.get('strength')
                 location = u.attrib.get('location')
-                units[uid] = Unit(uid, max_health, strength, location, u_name)
+                units[uid] = Unit(uid, max_size, strength, location, u_name)
             self.players[name] = Player(name, gold, territories, units)
             
 
